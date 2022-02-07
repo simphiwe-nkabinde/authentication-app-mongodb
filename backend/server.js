@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 // restricted route. requires jwt authentication.
 app.get('/restricted', requireAuth, (req, res) => {
     let content = 'You are logged in. You have been successfuly authenticated and granted access to a restricted route.'
-    res.status(201).json(content)   //sent if authentication is successful
+    res.status(202).json(content)   //sent if authentication is successful
 })
 
 // route

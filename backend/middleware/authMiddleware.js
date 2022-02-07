@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken')
  */
 module.exports.requireAuth = (req, res, next) => {
     let token = req.cookies.jwt
+    console.log(req.cookies);
     if (token) {
         jwt.verify(token, 'w', { expiresIn: '1h' })
         if (decoded) {
