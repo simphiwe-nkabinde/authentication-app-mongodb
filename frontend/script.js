@@ -5,8 +5,10 @@ const pwdAlert = document.getElementById('pwdAlert');
 const emailInput = document.getElementById('emailInput')
 const pwdInput = document.getElementById('pwdInput')
 //restricted content elements
-const restrictedContent = document.getElementById('restrictedContent')
-const errorAlert = document.getElementById('errorAlert')
+const restrictedContent = document.getElementById('restrictedContent');
+const errorAlert = document.getElementById('errorAlert');
+const authBtnsContainer = document.getElementById('restrictedAuthContainer');
+const logoutBtnContainer = document.getElementById('restrictedLogoutContainer');
 
 function login(event) {
     event.preventDefault();
@@ -100,18 +102,37 @@ function register(event) {
 }
 
 function loadRestrictedContent() {
+    console.log(authBtnsContainer, logoutBtnContainer);
     // return
     //get restricted content
     fetch('http://localhost:3000/restricted')
     .then(res => res.json())
     .then(res => {
-        if (res.content) {
+        if (res.content) {      //user is logged in
             console.log(res);
+            authBtnsContainer.classList.add('d-none') //hide login/register buttons
             restrictedContent.innerText = res.content
-        } else if (res.error) {
+        } else if (res.error) {     //user not logged in
             console.log(res);
+            logoutBtnContainer.classList.add('d-none') //hide logout button. 
             errorAlert.innerText = res.error
         }
     })
-    .catch(err => console.log('error: ', err))
+    .catch(err => {
+        console.log('error: ', err);
+        document.querySelector('form').innerHTML = '<p id="errorAlert">Could not connect to server!</p>'
+    })
+}
+
+function logout(event) {
+    event.preventDefault()
+    fetch('http://localhost:3000/auth/logout')
+    .then(res => res.json())
+    .then(res => {
+        sessionStorage.setItem('userSatus', res.userStatus)
+    })
+    .catch(err => {
+        console.log('error: ', err)
+    })
+    window.location.reload();
 }

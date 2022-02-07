@@ -147,6 +147,9 @@ button{
 .text-center {
     text-align: center;
 }
+.d-none {
+    display: none;
+}
 
     </style>
 </head>
@@ -164,9 +167,12 @@ button{
         <p id="restrictedContent"></p>
         <p id="errorAlert"></p>
 
-        <div class="social">
+        <div class="social" id="restrictedAuthContainer">
             <a href="login.html"><div class="go">Login</div></a>
             <a href="register.html"><div class="fb">Register</div></a>
+        </div>
+        <div class="social" id="restrictedLogoutContainer">
+            <button onclick="logout(event)">Logout</button>
         </div>
     </form>
     <script src="./script.js"></script>

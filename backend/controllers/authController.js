@@ -2,7 +2,8 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs')
 const handleErrors = require('../errorHandlers/authErrorHandler')
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
+const res = require('express/lib/response');
 dotenv.config()
 
 const cookieOptions = {
@@ -36,7 +37,7 @@ module.exports.register = (req, res) => {
 
 /**
  * verifies user email and password against DB
- * @param {*} req { body.email, body.password }
+ * @param {*} req { body.email, body.password , cookie}
  * @param {*} res 
  */
 module.exports.login = (req, res) => {
@@ -59,4 +60,16 @@ module.exports.login = (req, res) => {
             let errors = handleErrors.login(err);
             res.status(400).json(errors);
         });
+}
+
+/**
+ * logs out user by removing user jwt token from browser
+ * @param {*} req { cookies }
+ * @param {*} res { cookie(), json() }
+ */
+module.exports.logout = (req, res) => {
+    console.log(req.cookies);
+    //remove user jwt token
+    res.cookie('jwt', '', {maxAge: 1000 * 10 })
+    res.json({userStatus: 'logged out'})
 }
