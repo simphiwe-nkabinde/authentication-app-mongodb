@@ -1,4 +1,9 @@
 const jwt = require('jsonwebtoken')
+const path = require('path');
+const dotenv = require('dotenv');
+const dirname = __dirname.slice(0, __dirname.search('/middleware'))
+
+dotenv.config({ path: path.join(dirname, '.env')});
 
 
 /**
@@ -8,6 +13,8 @@ const jwt = require('jsonwebtoken')
  * @param {*} next next()
  * @returns 
  */
+
+console.log(process.env.JWT_SECRET);
 module.exports.requireAuth = (req, res, next) => {
     let token = req.cookies.jwt
     console.log(req.cookies);

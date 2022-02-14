@@ -4,12 +4,13 @@ const dotenv = require('dotenv')
 const cors = require('cors')
 const cookieParser =  require('cookie-parser')
 const helmet = require('helmet')
+const path = require('path')
 
 const authRoute = require('./routes/authRoute')
 const { requireAuth } = require('./middleware/authMiddleware')
 
 const app = express()
-dotenv.config();
+dotenv.config({path: path.join(__dirname, '.env')});
 
 app.use(cookieParser())
 app.use(cors({origin: 'http://127.0.0.1:5500', credentials: true}))
