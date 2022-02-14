@@ -10,11 +10,10 @@ const jwt = require('jsonwebtoken')
  */
 module.exports.requireAuth = (req, res, next) => {
     let token = req.cookies.jwt
-    console.log(req.cookies);
+    console.log(token);
     if (token) {
-        jwt.verify(token, 'w', { expiresIn: '1h' })
+        let decoded = jwt.verify(token, 'w')
         if (decoded) {
-            console.log('token decoded: ', decoded);
             next()
         } else {
             return res.status(401).json({error: 'token invalid. Please Login'})

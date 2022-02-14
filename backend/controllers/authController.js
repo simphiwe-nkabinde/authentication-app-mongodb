@@ -7,14 +7,21 @@ const res = require('express/lib/response');
 dotenv.config()
 
 const cookieOptions = {
-    httpOnly: false, 
+    httpOnly: true, 
     maxAge: 1000 * 60 * 5,
+    sameSite: 'none',
+    secure: true
+}
+
+const cookieOptions1 = {
+    httpOnly: true, 
+    maxAge: 1,
     sameSite: 'none',
     secure: true
 }
 // create new jwt token for payload
 const createToken = (payload) => {
-    return jwt.sign(payload, 'w', { expiresIn: '1h'})   // *issue: setting secret to .env.JWT_SECRET == undefined
+    return jwt.sign(payload, 'w')   // *issue: setting secret to .env.JWT_SECRET == undefined
 }
 
 /**
@@ -70,6 +77,6 @@ module.exports.login = (req, res) => {
 module.exports.logout = (req, res) => {
     console.log(req.cookies);
     //remove user jwt token
-    res.cookie('jwt', '', {maxAge: 1000 * 10 })
+    res.cookie('jwt', '', cookieOptions1)
     res.json({userStatus: 'logged out'})
 }

@@ -47,10 +47,7 @@ function login(event) {
             emailAlert.innerText = res.errors.email;
             pwdAlert.innerText = res.errors.password;
         } else if (res.user) {
-            console.log(res.user);
             window.location.assign('restricted.html')
-            console.log(document.cookie);
-            // loadRestrictedContent();
         }
     })
     .catch(err => console.log('err: ', err))
@@ -90,11 +87,9 @@ function register(event) {
     .then(res => {
         if (res.errors) {
             //set alerts
-            console.log(res.errors);
             emailAlert.innerText = res.errors.email;
             pwdAlert.innerText = res.errors.password;
         } else {
-            console.log(res,'logged in');
             window.location.assign('login.html')
         }
     })
@@ -102,19 +97,16 @@ function register(event) {
 }
 
 function loadRestrictedContent() {
-    console.log(authBtnsContainer, logoutBtnContainer);
     // return
     //get restricted content
-    fetch('http://localhost:3000/restricted')
+    fetch('http://localhost:3000/restricted',{credentials: 'include'})
     .then(res => res.json())
     .then(res => {
         if (res.content) {      //user is logged in
-            console.log(res);
             authBtnsContainer.classList.add('d-none') //hide login/register buttons
             restrictedContent.innerText = res.content
         } else if (res.error) {     //user not logged in
-            console.log(res);
-            logoutBtnContainer.classList.add('d-none') //hide logout button. 
+            logoutBtnContainer.classList.add('d-none') //hide logout button.
             errorAlert.innerText = res.error
         }
     })
@@ -126,7 +118,7 @@ function loadRestrictedContent() {
 
 function logout(event) {
     event.preventDefault()
-    fetch('http://localhost:3000/auth/logout')
+    fetch('http://localhost:3000/auth/logout', {credentials: 'include'})
     .then(res => res.json())
     .then(res => {
         sessionStorage.setItem('userSatus', res.userStatus)
